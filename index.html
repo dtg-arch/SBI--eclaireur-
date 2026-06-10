@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBI-REC Éclaireur Interface</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #1a1a2e; color: #e0e0e0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { background-color: #16213e; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); width: 100%; max-width: 800px; margin-bottom: 20px; }
+        h1 { color: #e94560; text-align: center; margin-bottom: 30px; }
+        #chat-log { background-color: #0f3460; border: 1px solid #0f3460; border-radius: 8px; padding: 15px; max-height: 400px; overflow-y: auto; margin-bottom: 20px; white-space: pre-wrap; word-wrap: break-word; }
+        .user-message { color: #a9a9a9; margin-bottom: 10px; text-align: right; padding-right: 10px; }
+        .titan-response { 
+            color: #e0e0e0; 
+            margin-bottom: 10px; 
+            background-color: rgba(233, 69, 96, 0.1); 
+            padding: 10px; 
+            border-radius: 5px; 
+            border-left: 3px solid #e94560;
+            position: relative; /* Nécessaire pour positionner le bouton de copie */
+            padding-bottom: 40px; /* Ajoute de l'espace pour le bouton en bas */
+        }
+        #chat-form { display: flex; flex-direction: column; gap: 10px; }
+        #user-input, #acquirer-select { padding: 12px; border: 1px solid #0f3460; border-radius: 5px; background-color: #0f3460; color: #e0e0e0; font-size: 1em; }
+        #user-input::placeholder { color: #888; }
+        #send-button { background-color: #e94560; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; }
+        #send-button:hover { background-color: #ba324d; }
+        .loading { text-align: center; color: #e94560; margin-top: 10px; }
+
+        /* Style pour le bouton de copie */
+        .copy-button {
+            position: absolute;
+            bottom: 5px; /* Positionné en bas */
+            right: 10px; /* Décalé du bord droit */
+            background-color: #0f3460; /* Couleur de fond discrète */
+            color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 0.8em; /* Taille de police ajustée pour le texte */
+            opacity: 0.7;
+            transition: opacity 0.3s ease, background-color 0.3s ease;
+            line-height: 1; 
+        }
+        .copy-button:hover {
+            opacity: 1;
+            background-color: #ba324d; 
+        }
+    </style>
+    <!-- MathJax pour l'affichage des formules mathématiques (LaTeX) -->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <script>
+        // Configuration de MathJax pour reconnaître les délimiteurs LaTeX
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], 
+                displayMath: [['$$', '$$'], ['\\[', '\\]']] 
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore', 
+                processHtmlClass: 'tex2jax_process' 
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>SBI-REC Éclaireur v1.6 </h1>
+        <div id="chat-log">
+            <div class="titan-response">Système SBI-REC Éclaireur opérationnel. En attente de vecteur de commande.</div>
+        </div>
+        <form id="chat-form">
+            <input type="text" id="user-input" placeholder="Entrez votre commande..." autocomplete="off">
+            <!-- === BLOC DE SYNCHRONISATION === -->
+            <select id="acquirer-select">
+                <option value="wikipedia">Wikipedia</option>
+                <option value="duckduckgo_search">DuckDuckGo (Search)</option>
+                <option value="duckduckgo_news">DuckDuckGo (News)</option>
+            </select>
+            <!-- === FIN DU BLOC === -->
+            <button type="submit" id="send-button">Envoyer</button>
+        </form>
+        <div id="loading-indicator" class="loading" style="display: none;">Traitement du signal...</div>
+    </div>
+
+    <script>
+        const chatLog = document.getElementById('chat-log');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+        const acquirerSelect = document.getElementById('acquirer-select');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const message = userInput.value.trim();
+            const acquirerType = acquirerSelect.value;
+
+            if (!message) return;
+
+            appendMessage('user', `[Architecte] > ${message}`);
+            userInput.value = '';
+            loadingIndicator.style.display = 'block';
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message, acquirer_type: acquirerType }),
+                });
+
+                const data = await response.json();
+                appendMessage('titan', data.response);
+            } catch (error) {
+                console.error('Erreur lors de la communication avec l\'API:', error);
+                appendMessage('titan', '[ERREUR SYSTÈME] Échec de la communication avec le noyau TITAN.');
+            } finally {
+                loadingIndicator.style.display = 'none';
+                chatLog.scrollTop = chatLog.scrollHeight;
+            }
+        });
+
+        function appendMessage(sender, message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add(sender === 'user' ? 'user-message' : 'titan-response');
+            
+            // Conversion basique du Markdown (gras et sauts de ligne)
+            let formattedMessage = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            formattedMessage = formattedMessage.replace(/\n/g, '<br>');
+            
+            // Assure que MathJax traite les réponses de TITAN
+            if (sender === 'titan') {
+                messageElement.classList.add('tex2jax_process'); 
+            }
+
+            messageElement.innerHTML = formattedMessage;
+
+            // Ajout du bouton de copie pour les réponses de L'éclaireur
+            if (sender === 'titan') {
+                const copyButton = document.createElement('button');
+                copyButton.classList.add('copy-button');
+                copyButton.textContent = 'Copier la réponse'; // Texte "Copier la réponse"
+                copyButton.title = 'Copier la réponse';
+                // Copie le message original non formaté pour préserver le LaTeX/Markdown
+                copyButton.onclick = () => copyToClipboard(message); 
+                messageElement.appendChild(copyButton);
+            }
+
+            chatLog.appendChild(messageElement);
+            
+            // Traitement MathJax pour les formules mathématiques si MathJax est chargé
+            if (sender === 'titan' && typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise([messageElement]);
+            }
+
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        // Fonction pour copier le texte dans le presse-papiers
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                console.log('Texte copié dans le presse-papiers !');
+            }).catch(err => {
+                console.error('Erreur lors de la copie: ', err);
+                alert('Échec de la copie du texte.');
+            });
+        }
+    </script>
+</body>
+</html>
