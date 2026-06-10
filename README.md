@@ -38,10 +38,10 @@ Utilisation
 Les modules permettent de récupérer des signaux bruts (Wikipedia, DuckDuckGo) et de les structurer de façon claire et factuelle.
 Dons
 Si ce travail vous est utile et que votre conscience vous le permet, les dons serviront uniquement à améliorer la qualité technique des prochains modules et à soutenir le développement de SBI-Éclaireur.
-Contact : contact@lascribeforge.fr
+Contact : contact.alex@lascribeforge.fr
 Licence
 Les modules de cette version publique sont sous licence MIT (voir fichier LICENSE).
 Le cœur du moteur SBI-REC TITAN reste sous licence BSL 1.1 et n’est pas inclus dans ce dépôt.
 
 Créé par La Scribe Forge
-Contact : contact@lascribeforge.fr
+Contact : contact.alex@lascribeforge.fr
