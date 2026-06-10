@@ -35,4 +35,4 @@ Dons & Contributions
 N’hésitez pas à tester, donner votre feedback ou contribuer.
 Tout retour est bon à prendre pour améliorer le projet.
 Si cela vous est utile, les dons serviront uniquement à améliorer la qualité technique des prochains modules.
-Contact : contact@lascribeforge.fr
+Contact : contact.alex@lascribeforge.fr
