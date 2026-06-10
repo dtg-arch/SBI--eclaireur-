@@ -1,9 +1,1 @@
-Première publication publique de SBI-Éclaireur.
-
-Cette version contient les modules d’acquisition (Wikipedia + DuckDuckGo) et de structuration factuelle de signaux.
-
-Cœur du moteur SBI-REC TITAN reste protégé.
-
-N’hésitez pas à tester et à faire des retours. Tout feedback est bienvenu pour améliorer le projet.
-
-Merci à ceux qui contribueront ou soutiendront le développement.
+Modules publics d’acquisition et de raffinage de signaux (SBI-Éclaireur). Version communautaire d’un projet souverain plus large. Tri factuel des informations sans bruit inutile.
