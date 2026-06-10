@@ -1,47 +1,38 @@
-SBI-Éclaireur
+# SBI-Éclaireur
 
 **SBI-Éclaireur** est la version publique des modules d’acquisition et de raffinage de signaux, développés grâce au moteur souverain **SBI-REC TITAN**.
 
-### Nouvelle direction du projet
+### Intention du projet
 
-Après plusieurs mois de développement en mode souverain et air-gapped, je passe en **modèle hybride** :
-
-- Le **cœur du moteur SBI-REC TITAN** reste protégé sous licence **BSL 1.1**.  
-- Les **modules périphériques** (acquisition, raffinage, outils) sont ouverts à la communauté sous licence **MIT**.
-
-**Intention du projet :**  
-Grâce à la Forge, le rôle de SBI-Éclaireur est de **trier les informations en masse** et d’**extraire la structure** sans détour ni bruit inutile.  
+Grâce à la Forge, le rôle de SBI-Éclaireur est de **trier les informations en masse** et d’**extraire la structure essentielle** sans détour ni bruit inutile.  
 Priorité absolue à la **vérité factuelle**.
 
-### Modules inclus dans cette version publique
+### Modules inclus
 
-- `fars_acquirer.py` → Interface d’acquisition (Wikipedia)
-- `fars_acquirer_duckduckgo_news.py` → Acquisition d’actualités via DuckDuckGo
-- `fars_models.py` → Modèles Pydantic de structuration
-- `fars_refiner.py` → Raffineur de signal (version allégée)
-- `main.py` → Exemple d’orchestration simple
-- `api.py` → Micro-service FastAPI (optionnel)
+- `fars_acquirer.py` → Acquisition Wikipedia
+- `fars_acquirer_duckduckgo_news.py` → Acquisition actualités DuckDuckGo
+- `fars_models.py` → Modèles de structuration Pydantic
+- `fars_refiner.py` → Raffineur de signal
+- `api.py` → Micro-service FastAPI
+- `main.py` → Exemple d’utilisation
 
 ### Installation
 
 ```bash
 pip install wikipedia-api duckduckgo-search pydantic langchain-google-genai python-dotenv fastapi uvicorn
-Crée un fichier .env à la racine avec ta clé :
-envGOOGLE_API_KEY=ta_cle_ici
+Crée un fichier .env à la racine :
+.env _ GOOGLE_API_KEY=ta_cle_google_api_ici
 Lancement
-Version simple (script) :
+Mode simple :
 Bashpython main.py
-Version API (recommandée) :
+Mode API (recommandé) :
 Bashuvicorn api:app --reload --host 127.0.0.1 --port 5000
 Puis ouvre http://127.0.0.1:5000 dans ton navigateur.
-Utilisation
-Les modules permettent de récupérer des signaux bruts (Wikipedia, DuckDuckGo) et de les structurer de façon claire et factuelle.
-Dons
-Si ce travail vous est utile et que votre conscience vous le permet, les dons serviront uniquement à améliorer la qualité technique des prochains modules et à soutenir le développement de SBI-Éclaireur.
-Contact : contact.alex@lascribeforge.fr
 Licence
-Les modules de cette version publique sont sous licence MIT (voir fichier LICENSE).
-Le cœur du moteur SBI-REC TITAN reste sous licence BSL 1.1 et n’est pas inclus dans ce dépôt.
-
-Créé par La Scribe Forge
-Contact : contact.alex@lascribeforge.fr
+Modules publics → MIT
+Cœur SBI-REC TITAN → BSL 1.1 (protégé, non inclus)
+Dons & Contributions
+N’hésitez pas à tester, donner votre feedback ou contribuer.
+Tout retour est bon à prendre pour améliorer le projet.
+Si cela vous est utile, les dons serviront uniquement à améliorer la qualité technique des prochains modules.
+Contact : contact@lascribeforge.fr
