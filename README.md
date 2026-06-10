@@ -35,4 +35,19 @@ Dons & Contributions
 N’hésitez pas à tester, donner votre feedback ou contribuer.
 Tout retour est bon à prendre pour améliorer le projet.
 Si cela vous est utile, les dons serviront uniquement à améliorer la qualité technique des prochains modules.
+
+
+
+### Soutenir le développement
+
+Si **SBI-Éclaireur** vous est utile et que votre conscience vous le permet, vous pouvez soutenir le projet via PayPal :
+
+**[💰 Faire un don](https://www.paypal.com/donate/?hosted_button_id=96P77EMM2C6RL)**
+
+**Message pour les donateurs :**
+
+> Merci du fond du cœur.  
+> Ce projet est né dans la fatigue, la solitude et la volonté de créer quelque chose de vrai.  
+> Chaque euro reçu sert uniquement à améliorer la qualité technique des modules et à continuer le combat pour une IA plus factuelle et souveraine.  
+> Même un petit don fait une vraie différence.
 Contact : contact.alex@lascribeforge.fr
